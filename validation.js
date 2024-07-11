@@ -27,12 +27,10 @@ formulaire.addEventListener('submit', function(e) {
         erreur_libelle.innerHTML = `veuillez bien regarder les caracteres saisis`;
         erreur_libelle.style.color = 'red';
         valid = false;
-
     }
     if(valid){
         document.getElementById('desc_div').classList.remove('hidden');
     }
-
     // valodation pour la description
     let desc = document.getElementById('desc_input');
     let erreur_desc = document.getElementById('error_desc');
@@ -60,8 +58,80 @@ categorieSelect.addEventListener('change', function() {
 
     // Afficher le message de succès après avoir sélectionné une catégorie
     document.getElementById('submit_btn').classList.remove('hidden'); // Afficher le bouton Soumettre
-     document.getElementById('mon_formulaire').classList.add('hidden');
-    document.getElementById('success_message').classList.remove('hidden');})
+    
 
+    submitbouton = document.getElementById('submit_btn');
+    submitbouton.addEventListener('click', function(){
+      document.getElementById('mon_formulaire').classList.add('hidden');
+    document.getElementById('success_message').classList.remove('hidden');
+
+
+    
+
+     // Récupérer la catégorie sélectionnée
+     let categorieSelect = document.getElementById('categorie_input');
+     let categorieValue = categorieSelect.options[categorieSelect.selectedIndex].text;
+
+     // Ajouter les données au tableau
+     let tableBody = document.getElementById('table_body');
+     let newRow = tableBody.insertRow(); // Créer une nouvelle ligne dans le tableau
+
+     // Insérer les cellules avec les données soumises
+     let cell1 = newRow.insertCell(0);
+     let cell2 = newRow.insertCell(1);
+     let cell3 = newRow.insertCell(2);
+     let cell4= newRow.insertCell(3);
+     let cell5 = newRow.insertCell(3);
+
+
+
+     cell1.textContent = libelle.value;
+     cell2.textContent = desc.value;
+     cell3.textContent = categorieValue;
+     cell4.innerHTML = '<button class="delete-btn">Supprimer</button>';
+     cell5.innerHTML = '<button class="approve-btn btn btn-success">Approuver</button> <button class="disapprove-btn btn btn-danger">Désapprouver</button>';
+        
+        // Ajouter les événements pour les boutons
+        cell4.querySelector('.delete-btn').addEventListener('click', function () {
+            deleteRow(newRow);
+        });
+
+        function deleteRow(row) {
+            tableBody.removeChild(row);
+        }
+
+            // Ajouter les événements pour les boutons d'approbation et de désapprobation
+            cell5.querySelector('.approve-btn').addEventListener('click', function () {
+                approveIdea(newRow);
+                
+            });
+
+            cell5.querySelector('.disapprove-btn').addEventListener('click', function () {
+                disapproveIdea(newRow);
+            });
+
+            // Fonction pour approuver une idée
+            function approveIdea(row) {
+                row.classList.add('approved');
+            }
+
+            // Fonction pour désapprouver une idée
+            function disapproveIdea(row) {
+                row.classList.add('disapproved');
+            }
+    
+    
+
+     // Afficher le tableau et masquer le formulaire et le message de succès
+     document.getElementById('success_message').classList.remove('hidden');
+     document.getElementById('mon_formulaire').classList.add('hidden');
+     document.getElementById('data_table').classList.remove('hidden');
+    })
+    });
+
+    
+       
+    
+    
 
 });
